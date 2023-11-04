@@ -6,41 +6,37 @@
 #include <windows.h>
 #pragma comment (lib, "libmysql.lib")
 
+#define MYSQLUSER "root"//ìœ ì € ì´ë¦„
+#define MYSQLPASSWORD "dgu1234!"//ë¹„ë°€ë²ˆí˜¸
+#define MYSQLIP "localhost"//ì—°ê²°í•  ip ìê¸°ìì‹ ì€ localhost ì•„ë‹ˆë©´ ipconfigë¡œ ìì‹ ì˜ ipë¥¼ ì¹œë‹¤.
+//localhostëŠ” ë‹¤ë¥¸ì»´í“¨í„°ë¡œ í•˜ë©´ ì—°ê²°ì´ ì•ˆëœë‹¤. ë°°í¬í• ë•Œ ì£¼ì˜
 
-#define MYSQLUSER "root"//À¯Àú ÀÌ¸§
-#define MYSQLPASSWORD "dgu1234!"//ºñ¹Ğ¹øÈ£
-#define MYSQLIP "localhost"//¿¬°áÇÒ ip ÀÚ±âÀÚ½ÅÀº localhost ¾Æ´Ï¸é ipconfig·Î ÀÚ½ÅÀÇ ip¸¦ Ä£´Ù.
-//localhost´Â ´Ù¸¥ÄÄÇ»ÅÍ·Î ÇÏ¸é ¿¬°áÀÌ ¾ÈµÈ´Ù. ¹èÆ÷ÇÒ¶§ ÁÖÀÇ
+//ì €í¬ íŒ€ì€ ë¹„ë°€ë²ˆí˜¸ëŠ” ë¹„ë°€í‚¤ë¼ ë”°ë¡œ ì„¤ì •í•˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤. ê·¸ë˜ì„œ ì´ë²ˆ ê³¼ì œì—ì„œ ë¡œê·¸ì¸ ë° íšŒì›ê°€ì… ê³¼ì •ì— ë¹„ë°€ë²ˆí˜¸ ì…ë ¥ì€ ì¼ë¶€ëŸ¬ ì•ˆë„£ì—ˆìŠµë‹ˆë‹¤. 
+// ì´ ì  ì°¸ê³ í•´ì„œ ë´ì£¼ì‹œë©´ ì •ë§ ê°ì‚¬í•˜ê² ìŠµë‹ˆë‹¤.
 
-//ÀúÈñ ÆÀÀº ºñ¹Ğ¹øÈ£´Â ºñ¹ĞÅ°¶ó µû·Î ¼³Á¤ÇÏÁö ¾Ê¾Ò½À´Ï´Ù. ±×·¡¼­ ÀÌ¹ø °úÁ¦¿¡¼­ ·Î±×ÀÎ ¹× È¸¿ø°¡ÀÔ °úÁ¤¿¡ ºñ¹Ğ¹øÈ£ ÀÔ·ÂÀº ÀÏºÎ·¯ ¾È³Ö¾ú½À´Ï´Ù. 
-// ÀÌ Á¡ Âü°íÇØ¼­ ºÁÁÖ½Ã¸é Á¤¸» °¨»çÇÏ°Ú½À´Ï´Ù.
-//2019112174 Á¶Ã¢¿í ¹× À±¼öºó
-
-
-
-void loadmysql(char mysqlip[], MYSQL* cons)//MYSQL ¼­¹ö ºÒ·¯¿À±â
+void loadmysql(char mysqlip[], MYSQL* cons)//MYSQL ì„œë²„ ë¶ˆëŸ¬ì˜¤ëŠ” ë©”ì†Œë“œ
 {
-    if (cons == NULL) //cons°¡ ÃÊ±âÈ­¸¦ ¸øÇßÀ¸¸é
+    if (cons == NULL) //consê°€ ì´ˆê¸°í™”ë¥¼ ëª»í–ˆìœ¼ë©´
     {
-        fprintf(stderr, "%s\n", mysql_error(cons));//¿¡·¯ ÇÁ¸°Æ®, printf("%s")¿Í °°À½
+        fprintf(stderr, "%s\n", mysql_error(cons));//ì—ëŸ¬ í”„ë¦°íŠ¸, printf("%s")ì™€ ê°™ìŒ
         Sleep(1000);
         exit(1);
     }
 
-    if (!(mysql_real_connect(cons, mysqlip, MYSQLUSER, MYSQLPASSWORD, NULL, 0, NULL, 0) == NULL)) //mysql¼­¹ö·Î ¿¬°á ¼º°øÇÏ¸é 0 ¾Æ´Ï¸é ´Ù¸¥¼ö ¹İÈ¯
+    if (!(mysql_real_connect(cons, mysqlip, MYSQLUSER, MYSQLPASSWORD, NULL, 0, NULL, 0) == NULL)) //mysqlì„œë²„ë¡œ ì—°ê²° ì„±ê³µì‹œ
     {
-        mysql_set_character_set(cons, "euckr");//MySQL ¹®ÀÚ¸¦ ÁöÁ¤ÇÑ´Ù. ¸¸¾à ¾ÈÇÏ¸é ÇÑ±ÛÀÌ Â©¸².
+        mysql_set_character_set(cons, "euckr");//MySQL ë¬¸ìë¥¼ ì§€ì •í•œë‹¤. ë§Œì•½ ì•ˆí•˜ë©´ í•œê¸€ì´ ì§¤ë¦¼.
     }
 
-    else
+    else //mysql ì—°ê²° ì‹¤íŒ¨ì‹œ
     {
-        fprintf(stderr, "¿¬°á ¿À·ù : %s\n", mysql_error(cons));
+        fprintf(stderr, "ì—°ê²° ì˜¤ë¥˜ : %s\n", mysql_error(cons));
         getchar();
     }
     return;
 }
 
-void finish_with_error(MYSQL* conn)
+void finish_with_error(MYSQL* conn) //ì—ëŸ¬ ì²˜ë¦¬ í•¨ìˆ˜
 {
     fprintf(stderr, "%s\n", mysql_error(conn));
     mysql_close(conn);
@@ -50,18 +46,18 @@ void finish_with_error(MYSQL* conn)
 int main(void)
 {
 
-    MYSQL* conn = mysql_init(NULL);//MYSQL ¿¬°á ÃÊ±âÈ­.
+    MYSQL* conn = mysql_init(NULL);//MYSQL ì—°ê²° ì´ˆê¸°í™”.
     loadmysql(MYSQLIP, conn);
 
     //we used DB Coupang1
 
-    char* qry_check; //id Ã¼Å©¿ë º¯¼ö
-    char qry[200]; // sprint ÀúÀå°ªid,ÈŞ´ëÆù ¹øÈ£,ÀÌ¸ŞÀÏ,ÀÌ¸§ °ª ÀúÀå
+    char* qry_check; //id ì²´í¬ìš© ë³€ìˆ˜
+    char qry[200]; // sprint ì €ì¥ê°’id,íœ´ëŒ€í° ë²ˆí˜¸,ì´ë©”ì¼,ì´ë¦„ ê°’ ì €ì¥
     char* qry_storage;  ///
 
-    char id[20];//sql¹®¿¡¼­ varchar(20)À¸·Î ¼³Á¤Çß±â¿¡
+    char id[20];//sqlë¬¸ì—ì„œ varchar(20)ìœ¼ë¡œ ì„¤ì •í–ˆê¸°ì—
 
-    char check_id[20];//sql¹®¿¡¼­ varchar(20)À¸·Î ¼³Á¤Çß±â¿¡
+    char check_id[20];//sqlë¬¸ì—ì„œ varchar(20)ìœ¼ë¡œ ì„¤ì •í–ˆê¸°ì—
 
     int field;
 
@@ -80,25 +76,25 @@ int main(void)
         exit(1);
     }    
     printf("\n\n");
-    printf("\t\t ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ\n");
+    printf("\t\t ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡\n");
     printf("\t\t|                COUPANG               |\n");
-    printf("\t\t ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ\n");
+    printf("\t\t ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡\n");
 
-    printf("\t\t-¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ-\n");
+    printf("\t\t-ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡-\n");
 
     printf("\t\t|\t\t");
-    printf("1.È¸¿ø°¡ÀÔ");
+    printf("1.íšŒì›ê°€ì…");
     printf("\t\t|\n");
 
     printf("\t\t|\t\t");
-    printf("2.·Î±×ÀÎ");
+    printf("2.ë¡œê·¸ì¸");
     printf("\t\t|\n");
 
 
     printf("\t\t|\t\t");
-    printf("3.À¥ÆäÀÌÁö Á¾·á");
+    printf("3.ì›¹í˜ì´ì§€ ì¢…ë£Œ");
     printf("\t\t|\n");
-    printf("\t\t-¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ-\n");
+    printf("\t\t-ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡-\n");
 
 
     int selecting;
@@ -106,22 +102,22 @@ int main(void)
     printf("\t\t Select the number what you want :");
     scanf("%d", &selecting);
 
-        if (selecting == 1) //È¸¿ø°¡ÀÔ Ã¢
+        if (selecting == 1) //íšŒì›ê°€ì… ì°½
         {
             system("cls");
             same_id:
          
-            char phone_number[20]; //sql¹®¿¡¼­ varchar(20)À¸·Î ¼³Á¤Çß±â¿¡
-            char email[80]; //sql¹®¿¡¼­ varchar(80)À¸·Î ¼³Á¤Çß±â¿¡
-            char name[20]; //sql¹®¿¡¼­ varchar(20)À¸·Î ¼³Á¤Çß±â¿¡
+            char phone_number[20]; //sqlë¬¸ì—ì„œ varchar(20)ìœ¼ë¡œ ì„¤ì •í–ˆê¸°ì—
+            char email[80]; //sqlë¬¸ì—ì„œ varchar(80)ìœ¼ë¡œ ì„¤ì •í–ˆê¸°ì—
+            char name[20]; //sqlë¬¸ì—ì„œ varchar(20)ìœ¼ë¡œ ì„¤ì •í–ˆê¸°ì—
 
-            char* qry_check; //id Ã¼Å©¿ë º¯¼ö
-            char qry[200]; // sprint ÀúÀå°ªid,ÈŞ´ëÆù ¹øÈ£,ÀÌ¸ŞÀÏ,ÀÌ¸§ °ª ÀúÀå
+            char* qry_check; //id ì²´í¬ìš© ë³€ìˆ˜
+            char qry[200]; // sprint ì €ì¥ê°’id,íœ´ëŒ€í° ë²ˆí˜¸,ì´ë©”ì¼,ì´ë¦„ ê°’ ì €ì¥
             char* qry_storage;  ///
 
-            char id[20];//sql¹®¿¡¼­ varchar(20)À¸·Î ¼³Á¤Çß±â¿¡
+            char id[20];//sqlë¬¸ì—ì„œ varchar(20)ìœ¼ë¡œ ì„¤ì •í–ˆê¸°ì—
 
-            char check_id[20];//sql¹®¿¡¼­ varchar(20)À¸·Î ¼³Á¤Çß±â¿¡
+            char check_id[20];//sqlë¬¸ì—ì„œ varchar(20)ìœ¼ë¡œ ì„¤ì •í–ˆê¸°ì—
 
             int field;
 
@@ -132,24 +128,24 @@ int main(void)
 
 
                 printf("\n\n");
-                printf("\t\t-¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ\n");
+                printf("\t\t-ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡\n");
                 printf("\t\t|                COUPANG                   |\n");
-                printf("\t\t-¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ\n");
-                printf("\t\t-¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ\n");
+                printf("\t\t-ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡\n");
+                printf("\t\t-ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡\n");
                 printf("\t\t| Please enter your membership information |\n");
-                printf("\t\t-¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ\n");
+                printf("\t\t-ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡\n");
 
             
-                    printf("\t\tID¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À: ");
+                    printf("\t\tIDë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤: ");
                     scanf("%s", &id);
 
-                    qry_check = "select ID from User1;"; //È¸¿ø°¡ÀÔ½Ã ID(Äõ¸®)°¡ Áßº¹ÀÎÁö È®ÀÎ
+                    qry_check = "select ID from User1;"; //íšŒì›ê°€ì…ì‹œ ID(ì¿¼ë¦¬)ê°€ ì¤‘ë³µì¸ì§€ í™•ì¸
 
                     mysql_real_query(conn, qry_check, strlen(qry_check));
                     res = mysql_store_result(conn);
                     field = mysql_num_fields(res);
 
-                    while (row = mysql_fetch_row(res)) // ÀÔ·ÂÇÑ ID¿Í ºñ±³
+                    while (row = mysql_fetch_row(res)) // ì…ë ¥í•œ IDì™€ ë¹„êµ
                     {
                         for (int i = 0; i < field; i++)
                         {
@@ -163,47 +159,47 @@ int main(void)
 
                     mysql_free_result(res);
 
-                    // ÀÔ·ÂÇÑ ID°¡ Áßº¹½Ã, ´Ù½Ã ÀÔ·ÂÇÏ°Ô ÇÏ±â À§ÇÔ.
+                    // ì…ë ¥í•œ IDê°€ ì¤‘ë³µì‹œ, ë‹¤ì‹œ ì…ë ¥í•˜ê²Œ í•˜ê¸° ìœ„í•¨.
                     if (correct == 1)
                     {
                         printf("\n\n");
                         system("cls");
-                        printf("\n\n\t\tÀÌ¹Ì »ç¿ëÁßÀÎ ¾ÆÀÌµğÀÔ´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇÏ½Ê½Ã¿À.");
+                        printf("\n\n\t\tì´ë¯¸ ì‚¬ìš©ì¤‘ì¸ ì•„ì´ë””ì…ë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•˜ì‹­ì‹œì˜¤.");
                        
                         goto same_id;
                       
                     }
-                    else //ÀÔ·ÂÇÑ ID°¡ Áßº¹ÀÌ ¾Æ´Ò ½Ã,
+                    else //ì…ë ¥í•œ IDê°€ ì¤‘ë³µì´ ì•„ë‹ ì‹œ,
                     {
-                        printf("\t\tÇÚµåÆù¹øÈ£¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À: ");
+                        printf("\t\tí•¸ë“œí°ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤: ");
                         scanf("%s", phone_number);
 
-                        printf("\t\tÀÌ¸ŞÀÏÀ» ÀÔ·ÂÇÏ½Ê½Ã¿À: ");
+                        printf("\t\tì´ë©”ì¼ì„ ì…ë ¥í•˜ì‹­ì‹œì˜¤: ");
                         scanf("%s", email);
 
-                        printf("\t\tÀÌ¸§À» ÀÔ·ÂÇÏ½Ê½Ã¿À: ");
+                        printf("\t\tì´ë¦„ì„ ì…ë ¥í•˜ì‹­ì‹œì˜¤: ");
                         scanf("%s", name);
                             
                         qry_storage = "insert into User1 values";
-                        sprintf(qry, "\t\tinsert into User1 values ('%s', '%s','%s', '%s' );", id, phone_number, email, name); //ÀÔ·Â¹ŞÀº °ªµéÀ» qry¿¡ ÀúÀå
+                        sprintf(qry, "\t\tinsert into User1 values ('%s', '%s','%s', '%s' );", id, phone_number, email, name); //ì…ë ¥ë°›ì€ ê°’ë“¤ì„ qryì— ì €ì¥
                         printf("\n");
-                        printf(qry); // ÀÔ·Â¹ŞÀº °ªµéÀ» Ãâ·Â
+                        printf(qry); // ì…ë ¥ë°›ì€ ê°’ë“¤ì„ ì¶œë ¥
 
 
-                        /* °ª ÀÔ·Â */
+                        /* ê°’ ì…ë ¥ */
                         mysql_query(conn, qry);
                         mysql_store_result(conn);
                        
 
-                        printf("\n\t\tÈ¸¿ø°¡ÀÔÀ» ¿Ï·áÇÏ¿´½À´Ï´Ù.\n");
-                        Sleep(3000); //µô·¹ÀÌ 3ÃÊ windows.h ³»ÀåÇÔ¼ö.s´Â ´ë¹®ÀÚ·Î ½á¾ßÇÔ.
+                        printf("\n\t\tíšŒì›ê°€ì…ì„ ì™„ë£Œí•˜ì˜€ìŠµë‹ˆë‹¤.\n");
+                        Sleep(3000); //ë”œë ˆì´ 3ì´ˆ windows.h ë‚´ì¥í•¨ìˆ˜.sëŠ” ëŒ€ë¬¸ìë¡œ ì¨ì•¼í•¨.
                         goto login;
                     }
 
         }
         
 
-        else if (selecting == 2) //·Î±×ÀÎ Ã¢ 
+        else if (selecting == 2) //ë¡œê·¸ì¸ ì°½ 
         {
             login:
 
@@ -211,18 +207,18 @@ int main(void)
             system("cls");
          
 
-            // ·Î±×ÀÎ ½ÇÆĞ½Ã goto ¹®À» ÅëÇÏ¿© ´Ù½Ã ·Î±×ÀÎ ½ÇÇà½ÃÅ°±â À§ÇÑ º¯¼ö
+            // ë¡œê·¸ì¸ ì‹¤íŒ¨ì‹œ goto ë¬¸ì„ í†µí•˜ì—¬ ë‹¤ì‹œ ë¡œê·¸ì¸ ì‹¤í–‰ì‹œí‚¤ê¸° ìœ„í•œ ë³€ìˆ˜
             login_fail:
-            printf("\n\n\t\t·Î±×ÀÎÀ» ÇÏ½Ê½Ã¿À");
+            printf("\n\n\t\të¡œê·¸ì¸ì„ í•˜ì‹­ì‹œì˜¤");
 
 
-            char* qry_check; //id Ã¼Å©¿ë º¯¼ö
-            char*qry; // ÀúÀå°ªid,ÈŞ´ëÆù ¹øÈ£,ÀÌ¸ŞÀÏ,ÀÌ¸§ °ª ÀúÀå
+            char* qry_check; //id ì²´í¬ìš© ë³€ìˆ˜
+            char*qry; // ì €ì¥ê°’id,íœ´ëŒ€í° ë²ˆí˜¸,ì´ë©”ì¼,ì´ë¦„ ê°’ ì €ì¥
             char* qry_storage;  ///
 
-            char id[20];//sql¹®¿¡¼­ varchar(20)À¸·Î ¼³Á¤Çß±â¿¡
+            char id[20];//sqlë¬¸ì—ì„œ varchar(20)ìœ¼ë¡œ ì„¤ì •í–ˆê¸°ì—
 
-            char check_id[20];//sql¹®¿¡¼­ varchar(20)À¸·Î ¼³Á¤Çß±â¿¡
+            char check_id[20];//sqlë¬¸ì—ì„œ varchar(20)ìœ¼ë¡œ ì„¤ì •í–ˆê¸°ì—
 
             int field;
 
@@ -234,29 +230,29 @@ int main(void)
 
 
             printf("\n\n");
-            printf("\t\t-¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ-\n");
+            printf("\t\t-ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡-\n");
             printf("\t\t|                                       |\n");
             printf("\t\t|               COUPANG                 |\n");
             printf("\t\t|                                       |\n");
-            printf("\t\t-¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ-\n");
+            printf("\t\t-ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡-\n");
             printf("\n");
-            printf("\t\t-¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ- \n");
+            printf("\t\t-ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡- \n");
             printf("\t\t|           please login the ID         | \n");
-            printf("\t\t-¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ-\n");
+            printf("\t\t-ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡ã…¡-\n");
 
 
-            //ÀúÈñ ÆÀÀº ºñ¹Ğ¹øÈ£´Â ºñ¹ĞÅ°¶ó µû·Î ¼³Á¤ÇÏÁö ¾Ê¾Ò½À´Ï´Ù! ±×·¡¼­ ÀÌ¹ø °úÁ¦¿¡¼­ ·Î±×ÀÎ ¹× È¸¿ø°¡ÀÔ °úÁ¤¿¡ ºñ¹ĞÅ° ÀÔ·ÂÀº ¾ø½À´Ï´Ù.
+            //ì €í¬ íŒ€ì€ ë¹„ë°€ë²ˆí˜¸ëŠ” ë¹„ë°€í‚¤ë¼ ë”°ë¡œ ì„¤ì •í•˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤! ê·¸ë˜ì„œ ì´ë²ˆ ê³¼ì œì—ì„œ ë¡œê·¸ì¸ ë° íšŒì›ê°€ì… ê³¼ì •ì— ë¹„ë°€í‚¤ ì…ë ¥ì€ ì—†ìŠµë‹ˆë‹¤.
 
-            printf("\n\t\t¾ÆÀÌµğ¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À:");
+            printf("\n\t\tì•„ì´ë””ë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤:");
             scanf("%s", &id);
 
-            qry = "select ID from User1;"; //ID(Äõ¸®)°¡ Áßº¹ÀÎÁö È®ÀÎ :À§ÀÇ 1¹ø °ú °°Àº °úÁ¤À¸·Î id°¡ ¸ÂÀ¸¸é ·Î±×ÀÎ ÈÄ »óÇ° ÁÖ¹®¼±ÅÃÀ¸·Î °¡±â
+            qry = "select ID from User1;"; //ID(ì¿¼ë¦¬)ê°€ ì¤‘ë³µì¸ì§€ í™•ì¸ :ìœ„ì˜ 1ë²ˆ ê³¼ ê°™ì€ ê³¼ì •ìœ¼ë¡œ idê°€ ë§ìœ¼ë©´ ë¡œê·¸ì¸ í›„ ìƒí’ˆ ì£¼ë¬¸ì„ íƒìœ¼ë¡œ ê°€ê¸°
 
             mysql_real_query(conn, qry, strlen(qry));
             res = mysql_store_result(conn);
             field = mysql_num_fields(res);
 
-            while (row = mysql_fetch_row(res)) // ÀÔ·ÂÇÑ ID¿Í ºñ±³
+            while (row = mysql_fetch_row(res)) // ì…ë ¥í•œ IDì™€ ë¹„êµ
             {
                 for (int i = 0; i < field; i++)
                 {
@@ -274,7 +270,7 @@ int main(void)
             {
                 system("cls");
                 printf("\n\n");
-                printf("\t\t·Î±×ÀÎ¿¡ ¼º°øÇÏ¼Ì½À´Ï´Ù. \n");
+                printf("\t\të¡œê·¸ì¸ì— ì„±ê³µí•˜ì…¨ìŠµë‹ˆë‹¤. \n");
 
                 productinfromation:
 
@@ -293,23 +289,23 @@ int main(void)
                 printf("\t\t|-----------------------------------------------------------------------| \n");
                 printf("\t\t| NO.| Number  | Unitprice | Classification | Quantity | Business number| \n");
                 printf("\t\t|-----------------------------------------------------------------------| \n");
-                printf("\t\t| 1.| 0000001 |   1,200   |     ½ÄÇ°       |   100    |   0123456789    | \n");
+                printf("\t\t| 1.| 0000001 |   1,200   |     ì‹í’ˆ       |   100    |   0123456789    | \n");
                 printf("\t\t|-----------------------------------------------------------------------| \n");
-                printf("\t\t| 2.| 0000100 |   30,000  |    ÀÇ·ù        |   35     |   0123456710    | \n");
+                printf("\t\t| 2.| 0000100 |   30,000  |    ì˜ë¥˜        |   35     |   0123456710    | \n");
                 printf("\t\t|-----------------------------------------------------------------------| \n");
-                printf("\t\t| 3.| 0010000 |  100,000  |  °¡ÀüÁ¦Ç°      |   15     |   0123453892    | \n");
+                printf("\t\t| 3.| 0010000 |  100,000  |  ê°€ì „ì œí’ˆ      |   15     |   0123453892    | \n");
                 printf("\t\t|-----------------------------------------------------------------------| \n");
                 printf("\n");
                 printf("\n");
 
                 int no=0;
-                char product_number[10];//sql¹®¿¡¼­ varchar(10)À¸·Î ¼³Á¤Çß±â¿¡
+                char product_number[10];//sqlë¬¸ì—ì„œ varchar(10)ìœ¼ë¡œ ì„¤ì •í–ˆê¸°ì—
 
-                char resident_number[20]; //sql¹®¿¡¼­ varchar(20)À¸·Î ¼³Á¤Çß±â¿¡
-                char address1[80]; //sql¹®¿¡¼­ varchar(80)À¸·Î ¼³Á¤Çß±â¿¡
+                char resident_number[20]; //sqlë¬¸ì—ì„œ varchar(20)ìœ¼ë¡œ ì„¤ì •í–ˆê¸°ì—
+                char address1[80]; //sqlë¬¸ì—ì„œ varchar(80)ìœ¼ë¡œ ì„¤ì •í–ˆê¸°ì—
                 char address2[80];
 
-                printf("\t\t¿øÇÏ´Â »óÇ°À» ¼±ÅÃÇÏ½Ê½Ã¿À:");
+                printf("\t\tì›í•˜ëŠ” ìƒí’ˆì„ ì„ íƒí•˜ì‹­ì‹œì˜¤:");
                 scanf("%d", &no);
 
                 if (no == 1)
@@ -317,20 +313,20 @@ int main(void)
                     system("cls");
 
                     printf("\t\t|-----------------------------------------| \n");
-                    printf("\t\t|¿ìÆí¹øÈ£¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À: ");
+                    printf("\t\t|ìš°í¸ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤: ");
                     scanf("%s", resident_number);
                     printf("\t\t|-----------------------------------------| \n");
-                    printf("\t\t|ÁÖ¼Ò¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À(ex:¼­¿ï½Ã °­³²±¸): ");
+                    printf("\t\t|ì£¼ì†Œë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤(ex:ì„œìš¸ì‹œ ê°•ë‚¨êµ¬): ");
                     scanf("%s %s", address1, address2);
                     printf("\t\t|-----------------------------------------| \n");
-                    //Ä«µå°áÁ¦ ¹æ½Ä Àß¸ø ÀÔ·Â½Ã µ¹¾Æ¿È
+                    //ì¹´ë“œê²°ì œ ë°©ì‹ ì˜ëª» ì…ë ¥ì‹œ ëŒì•„ì˜´
                     paymentmethod1:
                     printf("\t\t|-----------------------------------------| \n");
-                    printf("\t\t| 1.°èÁÂÀÌÃ¼ | 2.½Å¿ëÄ«µå | 3. ¹«ÅëÀåÀÔ±İ |\n");
+                    printf("\t\t| 1.ê³„ì¢Œì´ì²´ | 2.ì‹ ìš©ì¹´ë“œ | 3. ë¬´í†µì¥ì…ê¸ˆ |\n");
                     printf("\t\t|-----------------------------------------| \n");
                     int payment_method = 0;
                     printf("\t\t|-----------------------------------------| \n");
-                    printf("\t\t|°áÁ¦ ¹æ½ÄÀ» ¼±ÅÃÇÏ½Ê½Ã¿À: ");
+                    printf("\t\t|ê²°ì œ ë°©ì‹ì„ ì„ íƒí•˜ì‹­ì‹œì˜¤: ");
                     scanf("%d", &payment_method);
                     printf("|\n");
                     printf("\t\t|-----------------------------------------| \n");
@@ -338,33 +334,33 @@ int main(void)
                     {
                         
                         int bankcode;
-                        printf("\n\t\t°èÁÂ¹øÈ£¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À:");
+                        printf("\n\t\tê³„ì¢Œë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤:");
                         scanf("%d", &bankcode);
 
 
 
-                        //ÆÇ¸Å ¿Ï·áÈÄ -1 ÇÏ±â
+                        //íŒë§¤ ì™„ë£Œí›„ -1 í•˜ê¸°
                         qry = "update Product set Product_quantity=product_quantity-1 \
                         where Product_number = '0000001';";
                         mysql_real_query(conn, qry, strlen(qry));
                         res = mysql_store_result(conn);
 
-                        //»óÇ°°³¼ö¿¡¼­ -1 ÇÑ °ª º¸¿©ÁÖ±â
+                        //ìƒí’ˆê°œìˆ˜ì—ì„œ -1 í•œ ê°’ ë³´ì—¬ì£¼ê¸°
    
-                        printf("\n\t\tÇØ´ç »óÇ°Àº ");
+                        printf("\n\t\tí•´ë‹¹ ìƒí’ˆì€ ");
                         mysql_query(conn, "select Product_quantity from Product where Product_number='0000001'; ");
                         MYSQL_RES* result = mysql_store_result(conn);
 
-                        //result °ªÀÌ ³ÎÀÌ¸é ¿À·ù °ËÃâ¿ë ÄÚµå
+                        //result ê°’ì´ ë„ì´ë©´ ì˜¤ë¥˜ ê²€ì¶œìš© ì½”ë“œ
                         if (result == NULL)
                         {
                             finish_with_error(conn);
                         }
-                        // resultÀÇ ¹®ÀÚ¿­ °³¼ö
+                        // resultì˜ ë¬¸ìì—´ ê°œìˆ˜
                         int num_fields = mysql_num_fields(result);
 
                         MYSQL_ROW row;
-                        //ÇÁ¸°Æ® ³»¿ë
+                        //í”„ë¦°íŠ¸ ë‚´ìš©
                         while (row = mysql_fetch_row(result))
                         {
                             for (int i = 0; i < num_fields; i++)
@@ -373,20 +369,20 @@ int main(void)
                             }
                      
                         }
-                        //result °ª ÃÊ±âÈ­
+                        //result ê°’ ì´ˆê¸°í™”
                         mysql_free_result(result);
 
-                        printf("°³ ³²¾Ò½À´Ï´Ù. \n");
+                        printf("ê°œ ë‚¨ì•˜ìŠµë‹ˆë‹¤. \n");
                    
 
                         printf("\n\t\t|--------------------------|");
-                        printf("\n\t\t|  ±¸¸Å°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù.  |");
-                        printf("\n\t\t|<±¸¸ÅÀÚ Á¤º¸>");
+                        printf("\n\t\t|  êµ¬ë§¤ê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.  |");
+                        printf("\n\t\t|<êµ¬ë§¤ì ì •ë³´>");
 
-                        printf("\n\t\t|¿ìÆí¹øÈ£: %s \n", resident_number);
-                        printf("\n\t\t|ÁÖ¼Ò: %s %s  ", address1, address2);
+                        printf("\n\t\t|ìš°í¸ë²ˆí˜¸: %s \n", resident_number);
+                        printf("\n\t\t|ì£¼ì†Œ: %s %s  ", address1, address2);
                         printf("\n\t\t|--------------------------| \n");
-                        printf("\n\t\t°¨»çÇÕ´Ï´Ù! ¹è¼ÛÀÌ ½ÃÀÛµË´Ï´Ù. ¹è¼ÛÀÏÀº ¾à 7ÀÏ Á¤µµ ¼Ò¿äµË´Ï´Ù.\n\n");
+                        printf("\n\t\tê°ì‚¬í•©ë‹ˆë‹¤! ë°°ì†¡ì´ ì‹œì‘ë©ë‹ˆë‹¤. ë°°ì†¡ì¼ì€ ì•½ 7ì¼ ì •ë„ ì†Œìš”ë©ë‹ˆë‹¤.\n\n");
 
                     }
 
@@ -396,35 +392,35 @@ int main(void)
 
                         int card_number;
                         char card_company[30];
-                        printf("\n\t\tÄ«µå»ç¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À:");
+                        printf("\n\t\tì¹´ë“œì‚¬ë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤:");
                         scanf("%s", card_company);
 
-                        printf("\n\t\tÄ«µå¹øÈ£¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À:");
+                        printf("\n\t\tì¹´ë“œë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤:");
                         scanf("%d", &card_number);
 
 
-                        //ÆÇ¸Å ¿Ï·áÈÄ -1 ÇÏ±â
+                        //íŒë§¤ ì™„ë£Œí›„ -1 í•˜ê¸°
                         qry = "update Product set Product_quantity=product_quantity-1 \
                         where Product_number = '0000001';";
                         mysql_real_query(conn, qry, strlen(qry));
                         res = mysql_store_result(conn);
 
-                        //»óÇ°°³¼ö¿¡¼­ -1 ÇÑ °ª º¸¿©ÁÖ±â
+                        //ìƒí’ˆê°œìˆ˜ì—ì„œ -1 í•œ ê°’ ë³´ì—¬ì£¼ê¸°
 
-                        printf("\n\t\tÇØ´ç »óÇ°Àº ");
+                        printf("\n\t\tí•´ë‹¹ ìƒí’ˆì€ ");
                         mysql_query(conn, "select Product_quantity from Product where Product_number='0000001'; ");
                         MYSQL_RES* result = mysql_store_result(conn);
 
-                        //result °ªÀÌ ³ÎÀÌ¸é ¿À·ù °ËÃâ¿ë ÄÚµå
+                        //result ê°’ì´ ë„ì´ë©´ ì˜¤ë¥˜ ê²€ì¶œìš© ì½”ë“œ
                         if (result == NULL)
                         {
                             finish_with_error(conn);
                         }
-                        // resultÀÇ ¹®ÀÚ¿­ °³¼ö
+                        // resultì˜ ë¬¸ìì—´ ê°œìˆ˜
                         int num_fields = mysql_num_fields(result);
 
                         MYSQL_ROW row;
-                        //ÇÁ¸°Æ® ³»¿ë
+                        //í”„ë¦°íŠ¸ ë‚´ìš©
                         while (row = mysql_fetch_row(result))
                         {
                             for (int i = 0; i < num_fields; i++)
@@ -433,18 +429,18 @@ int main(void)
                             }
 
                         }
-                        //result °ª ÃÊ±âÈ­
+                        //result ê°’ ì´ˆê¸°í™”
                         mysql_free_result(result);
 
-                        printf("°³ ³²¾Ò½À´Ï´Ù. \n");
+                        printf("ê°œ ë‚¨ì•˜ìŠµë‹ˆë‹¤. \n");
 
                         printf("\n\t\t|--------------------------| \n");
-                        printf("\n\t\t|  ±¸¸Å°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù.  |");
-                        printf("\n\t\t|<±¸¸ÅÀÚ Á¤º¸>");
-                        printf("\n\t\t|¿ìÆí¹øÈ£: %s \n", resident_number);
-                        printf("\n\t\t|ÁÖ¼Ò: %s %s  ", address1, address2);
+                        printf("\n\t\t|  êµ¬ë§¤ê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.  |");
+                        printf("\n\t\t|<êµ¬ë§¤ì ì •ë³´>");
+                        printf("\n\t\t|ìš°í¸ë²ˆí˜¸: %s \n", resident_number);
+                        printf("\n\t\t|ì£¼ì†Œ: %s %s  ", address1, address2);
                         printf("\n\t\t|--------------------------| \n");
-                        printf("\n\t\t°¨»çÇÕ´Ï´Ù! ¹è¼ÛÀÌ ½ÃÀÛµË´Ï´Ù.¹è¼ÛÀÏÀº ¾à 7ÀÏ Á¤µµ ¼Ò¿äµË´Ï´Ù.\n\n");
+                        printf("\n\t\tê°ì‚¬í•©ë‹ˆë‹¤! ë°°ì†¡ì´ ì‹œì‘ë©ë‹ˆë‹¤.ë°°ì†¡ì¼ì€ ì•½ 7ì¼ ì •ë„ ì†Œìš”ë©ë‹ˆë‹¤.\n\n");
 
 
                     }
@@ -453,27 +449,27 @@ int main(void)
                     {
                         
                         char bank_name[10];
-                        printf("\n\t\tÀÔ±İÇÒ ÀºÇàÀ» ÀÔ·Â½Ê½Ã¿À: ");
+                        printf("\n\t\tì…ê¸ˆí•  ì€í–‰ì„ ì…ë ¥ì‹­ì‹œì˜¤: ");
                         scanf("%s", bank_name);
-                        printf("\n\t\tÀÔ±İÇÒ ÀºÇà ¹× ÇØ´ç ÀºÇàÀÇ ÆÇ¸ÅÀÚ °èÁÂ¹øÈ£:");
+                        printf("\n\t\tì…ê¸ˆí•  ì€í–‰ ë° í•´ë‹¹ ì€í–‰ì˜ íŒë§¤ì ê³„ì¢Œë²ˆí˜¸:");
                         printf("\n\t\t%s",bank_name);
 
-                        // ÀÔ±İÇÒ ÆÇ¸ÅÀÚÀÇ °èÁÂ¹øÈ£¸¦ ºÒ·¯¿À´Â ÄÚµå
+                        // ì…ê¸ˆí•  íŒë§¤ìì˜ ê³„ì¢Œë²ˆí˜¸ë¥¼ ë¶ˆëŸ¬ì˜¤ëŠ” ì½”ë“œ
                         mysql_query(conn, "select Account_number from  Manufacturer as m,product as p \
                         where p.Business_number = M.Business_number and p.product_number = '0000001'; ");
 
                         MYSQL_RES* result = mysql_store_result(conn);
 
-                        //result °ªÀÌ ³ÎÀÌ¸é ¿À·ù °ËÃâ¿ë ÄÚµå
+                        //result ê°’ì´ ë„ì´ë©´ ì˜¤ë¥˜ ê²€ì¶œìš© ì½”ë“œ
                         if (result == NULL)
                         {
                             finish_with_error(conn);
                         }
-                        // resultÀÇ ¹®ÀÚ¿­ °³¼ö
+                        // resultì˜ ë¬¸ìì—´ ê°œìˆ˜
                         int num_fields = mysql_num_fields(result);
 
                         MYSQL_ROW row;
-                        //ÇÁ¸°Æ® ³»¿ë
+                        //í”„ë¦°íŠ¸ ë‚´ìš©
                         while (row = mysql_fetch_row(result))
                         {
                             for (int i = 0; i < num_fields; i++)
@@ -482,31 +478,31 @@ int main(void)
                             }
                             printf("\n");
                         }
-                        //result °ª ÃÊ±âÈ­
+                        //result ê°’ ì´ˆê¸°í™”
                         mysql_free_result(result);
 
-                        //ÆÇ¸Å ¿Ï·áÈÄ -1 ÇÏ±â
+                        //íŒë§¤ ì™„ë£Œí›„ -1 í•˜ê¸°
                         qry = "update Product set Product_quantity=product_quantity-1 \
                         where Product_number = '0000001';";
                         mysql_real_query(conn, qry, strlen(qry));
                         res = mysql_store_result(conn);
 
-                        printf("\n\n\t\t±¸¸ÅÀÏÀÚ 3ÀÏ ÀÌ³»·Î ÀÔ±İÇØÁÖ¼¼¿ä.\n");
+                        printf("\n\n\t\têµ¬ë§¤ì¼ì 3ì¼ ì´ë‚´ë¡œ ì…ê¸ˆí•´ì£¼ì„¸ìš”.\n");
                         printf("\n\t\t|--------------------------| \n");
-                        printf("\n\t\t|<±¸¸ÅÀÚ Á¤º¸>");
+                        printf("\n\t\t|<êµ¬ë§¤ì ì •ë³´>");
                         printf("\n");
-                        printf("\n\t\t|¿ìÆí¹øÈ£: %s \n", resident_number);
-                        printf("\n\t\t|ÁÖ¼Ò: %s %s  ", address1, address2);
+                        printf("\n\t\t|ìš°í¸ë²ˆí˜¸: %s \n", resident_number);
+                        printf("\n\t\t|ì£¼ì†Œ: %s %s  ", address1, address2);
                         printf("\n\t\t|--------------------------| \n");
                         printf("\t\t");
-                        printf("\n\t\t°¨»çÇÕ´Ï´Ù! ¹è¼ÛÀÏÀº ¹«ÅëÀå ÀÔ±İ³»¿ª È®ÀÎ ÈÄ ¾à 7ÀÏ Á¤µµ ¼Ò¿äµË´Ï´Ù.\n\n");
+                        printf("\n\t\tê°ì‚¬í•©ë‹ˆë‹¤! ë°°ì†¡ì¼ì€ ë¬´í†µì¥ ì…ê¸ˆë‚´ì—­ í™•ì¸ í›„ ì•½ 7ì¼ ì •ë„ ì†Œìš”ë©ë‹ˆë‹¤.\n\n");
 
                     }
-                    //ÁöºÒ ¹æ½ÄÀÌ Àß¸øµÈ °æ¿ì ´Ù½Ã ÁöºÒ ¹æ½Ä ¼±ÅÃ
+                    //ì§€ë¶ˆ ë°©ì‹ì´ ì˜ëª»ëœ ê²½ìš° ë‹¤ì‹œ ì§€ë¶ˆ ë°©ì‹ ì„ íƒ
                     else
                     {
                         system("cls");
-                        printf("\n\t\t±¸¸Å¹æ½ÄÀ» ´Ù½Ã ÀÔ·ÂÇÏ½Ê½Ã¿À :");
+                        printf("\n\t\têµ¬ë§¤ë°©ì‹ì„ ë‹¤ì‹œ ì…ë ¥í•˜ì‹­ì‹œì˜¤ :");
                         goto paymentmethod1;
 
                     }
@@ -517,20 +513,20 @@ int main(void)
                     system("cls");
 
                     printf("\t\t|-----------------------------------------| \n");
-                    printf("\t\t|¿ìÆí¹øÈ£¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À: ");
+                    printf("\t\t|ìš°í¸ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤: ");
                     scanf("%s", resident_number);
                     printf("\t\t|-----------------------------------------| \n");
-                    printf("\t\t|ÁÖ¼Ò¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À(ex:¼­¿ï½Ã °­³²±¸): ");
+                    printf("\t\t|ì£¼ì†Œë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤(ex:ì„œìš¸ì‹œ ê°•ë‚¨êµ¬): ");
                     scanf("%s %s", address1, address2);
                     printf("\t\t|-----------------------------------------| \n");
 
                      paymentmethod2:
                     printf("\t\t|-----------------------------------------| \n");
-                    printf("\t\t| 1.°èÁÂÀÌÃ¼ | 2.½Å¿ëÄ«µå | 3. ¹«ÅëÀåÀÔ±İ |\n");
+                    printf("\t\t| 1.ê³„ì¢Œì´ì²´ | 2.ì‹ ìš©ì¹´ë“œ | 3. ë¬´í†µì¥ì…ê¸ˆ |\n");
                     printf("\t\t|-----------------------------------------| \n");
                     int payment_method = 0;
                     printf("\t\t|-----------------------------------------| \n");
-                    printf("\t\t|°áÁ¦ ¹æ½ÄÀ» ¼±ÅÃÇÏ½Ê½Ã¿À: ");
+                    printf("\t\t|ê²°ì œ ë°©ì‹ì„ ì„ íƒí•˜ì‹­ì‹œì˜¤: ");
                     scanf("%d", &payment_method);
                     printf("|\n");
                     printf("\t\t|-----------------------------------------| \n");
@@ -538,31 +534,31 @@ int main(void)
                     {
 
                         int bankcode;
-                        printf("\n\t\t°èÁÂ¹øÈ£¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À:");
+                        printf("\n\t\tê³„ì¢Œë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤:");
                         scanf("%d", &bankcode);
 
-                        //ÆÇ¸Å ¿Ï·áÈÄ -1 ÇÏ±â
+                        //íŒë§¤ ì™„ë£Œí›„ -1 í•˜ê¸°
                         qry = "update Product set Product_quantity=product_quantity-1 \
                         where Product_number = '0000100';";
                         mysql_real_query(conn, qry, strlen(qry));
                         res = mysql_store_result(conn);
 
-                        //»óÇ°°³¼ö¿¡¼­ -1 ÇÑ °ª º¸¿©ÁÖ±â
+                        //ìƒí’ˆê°œìˆ˜ì—ì„œ -1 í•œ ê°’ ë³´ì—¬ì£¼ê¸°
 
-                        printf("\n\t\tÇØ´ç »óÇ°Àº ");
+                        printf("\n\t\tí•´ë‹¹ ìƒí’ˆì€ ");
                         mysql_query(conn, "select Product_quantity from Product where Product_number='0000100'; ");
                         MYSQL_RES* result = mysql_store_result(conn);
 
-                        //result °ªÀÌ ³ÎÀÌ¸é ¿À·ù °ËÃâ¿ë ÄÚµå
+                        //result ê°’ì´ ë„ì´ë©´ ì˜¤ë¥˜ ê²€ì¶œìš© ì½”ë“œ
                         if (result == NULL)
                         {
                             finish_with_error(conn);
                         }
-                        // resultÀÇ ¹®ÀÚ¿­ °³¼ö
+                        // resultì˜ ë¬¸ìì—´ ê°œìˆ˜
                         int num_fields = mysql_num_fields(result);
 
                         MYSQL_ROW row;
-                        //ÇÁ¸°Æ® ³»¿ë
+                        //í”„ë¦°íŠ¸ ë‚´ìš©
                         while (row = mysql_fetch_row(result))
                         {
                             for (int i = 0; i < num_fields; i++)
@@ -571,20 +567,20 @@ int main(void)
                             }
 
                         }
-                        //result °ª ÃÊ±âÈ­
+                        //result ê°’ ì´ˆê¸°í™”
                         mysql_free_result(result);
 
 
-                        printf("°³ ³²¾Ò½À´Ï´Ù. \n");
+                        printf("ê°œ ë‚¨ì•˜ìŠµë‹ˆë‹¤. \n");
 
                         printf("\n\t\t|--------------------------| \n");
-                        printf("\n\t\t|  ±¸¸Å°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù.  |");
-                        printf("\n\t\t|<±¸¸ÅÀÚ Á¤º¸>");
-                        printf("\n\t\t|¿ìÆí¹øÈ£: %s \n", resident_number);
-                        printf("\n\t\t|ÁÖ¼Ò: %s %s  ", address1, address2);
+                        printf("\n\t\t|  êµ¬ë§¤ê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.  |");
+                        printf("\n\t\t|<êµ¬ë§¤ì ì •ë³´>");
+                        printf("\n\t\t|ìš°í¸ë²ˆí˜¸: %s \n", resident_number);
+                        printf("\n\t\t|ì£¼ì†Œ: %s %s  ", address1, address2);
                         printf("\n\t\t|--------------------------| \n");
 
-                        printf("\n\t\t°¨»çÇÕ´Ï´Ù! ¹è¼ÛÀÌ ½ÃÀÛµË´Ï´Ù. ¹è¼ÛÀÏÀº ¾à 7ÀÏ Á¤µµ ¼Ò¿äµË´Ï´Ù.\n\n");
+                        printf("\n\t\tê°ì‚¬í•©ë‹ˆë‹¤! ë°°ì†¡ì´ ì‹œì‘ë©ë‹ˆë‹¤. ë°°ì†¡ì¼ì€ ì•½ 7ì¼ ì •ë„ ì†Œìš”ë©ë‹ˆë‹¤.\n\n");
 
 
                     }
@@ -594,35 +590,35 @@ int main(void)
 
                         int card_number;
                         char card_company[30];
-                        printf("\n\t\tÄ«µå»ç¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À:");
+                        printf("\n\t\tì¹´ë“œì‚¬ë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤:");
                         scanf("%s", card_company);
 
-                        printf("\n\t\tÄ«µå¹øÈ£¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À:");
+                        printf("\n\t\tì¹´ë“œë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤:");
                         scanf("%d", &card_number);
 
 
-                        //ÆÇ¸Å ¿Ï·áÈÄ -1 ÇÏ±â
+                        //íŒë§¤ ì™„ë£Œí›„ -1 í•˜ê¸°
                         qry = "update Product set Product_quantity=product_quantity-1 \
                         where Product_number = '0000100';";
                         mysql_real_query(conn, qry, strlen(qry));
                         res = mysql_store_result(conn);
 
-                        //»óÇ°°³¼ö¿¡¼­ -1 ÇÑ °ª º¸¿©ÁÖ±â
+                        //ìƒí’ˆê°œìˆ˜ì—ì„œ -1 í•œ ê°’ ë³´ì—¬ì£¼ê¸°
 
-                        printf("\n\t\tÇØ´ç »óÇ°Àº ");
+                        printf("\n\t\tí•´ë‹¹ ìƒí’ˆì€ ");
                         mysql_query(conn, "select Product_quantity from Product where Product_number='0000100'; ");
                         MYSQL_RES* result = mysql_store_result(conn);
 
-                        //result °ªÀÌ ³ÎÀÌ¸é ¿À·ù °ËÃâ¿ë ÄÚµå
+                        //result ê°’ì´ ë„ì´ë©´ ì˜¤ë¥˜ ê²€ì¶œìš© ì½”ë“œ
                         if (result == NULL)
                         {
                             finish_with_error(conn);
                         }
-                        // resultÀÇ ¹®ÀÚ¿­ °³¼ö
+                        // resultì˜ ë¬¸ìì—´ ê°œìˆ˜
                         int num_fields = mysql_num_fields(result);
 
                         MYSQL_ROW row;
-                        //ÇÁ¸°Æ® ³»¿ë
+                        //í”„ë¦°íŠ¸ ë‚´ìš©
                         while (row = mysql_fetch_row(result))
                         {
                             for (int i = 0; i < num_fields; i++)
@@ -631,18 +627,18 @@ int main(void)
                             }
 
                         }
-                        //result °ª ÃÊ±âÈ­
+                        //result ê°’ ì´ˆê¸°í™”
                         mysql_free_result(result);
-                        printf("°³ ³²¾Ò½À´Ï´Ù. \n");
+                        printf("ê°œ ë‚¨ì•˜ìŠµë‹ˆë‹¤. \n");
                         printf("\n\t\t|--------------------------| \n");
-                        printf("\n\t\t|  ±¸¸Å°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù.  |");
-                        printf("\n\t\t|<±¸¸ÅÀÚ Á¤º¸>");
-                        printf("\n\t\t|¿ìÆí¹øÈ£: %s \n", resident_number);
-                        printf("\n\t\t|ÁÖ¼Ò: %s %s  ", address1, address2);
+                        printf("\n\t\t|  êµ¬ë§¤ê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.  |");
+                        printf("\n\t\t|<êµ¬ë§¤ì ì •ë³´>");
+                        printf("\n\t\t|ìš°í¸ë²ˆí˜¸: %s \n", resident_number);
+                        printf("\n\t\t|ì£¼ì†Œ: %s %s  ", address1, address2);
                         printf("\n\t\t|--------------------------| \n");
 
 
-                        printf("\n\t\t°¨»çÇÕ´Ï´Ù! ¹è¼ÛÀÌ ½ÃÀÛµË´Ï´Ù.¹è¼ÛÀÏÀº ¾à 7ÀÏ Á¤µµ ¼Ò¿äµË´Ï´Ù.\n\n");
+                        printf("\n\t\tê°ì‚¬í•©ë‹ˆë‹¤! ë°°ì†¡ì´ ì‹œì‘ë©ë‹ˆë‹¤.ë°°ì†¡ì¼ì€ ì•½ 7ì¼ ì •ë„ ì†Œìš”ë©ë‹ˆë‹¤.\n\n");
 
 
                     }
@@ -651,28 +647,28 @@ int main(void)
                     {
 
                         char bank_name[10];
-                        printf("\n\t\tÀÔ±İÇÒ ÀºÇàÀ» ÀÔ·Â½Ê½Ã¿À: ");
+                        printf("\n\t\tì…ê¸ˆí•  ì€í–‰ì„ ì…ë ¥ì‹­ì‹œì˜¤: ");
                         scanf("%s", bank_name);
-                        printf("\n\t\tÀÔ±İÇÒ ÀºÇà ¹× ÇØ´ç ÀºÇàÀÇ ÆÇ¸ÅÀÚ °èÁÂ¹øÈ£:");
+                        printf("\n\t\tì…ê¸ˆí•  ì€í–‰ ë° í•´ë‹¹ ì€í–‰ì˜ íŒë§¤ì ê³„ì¢Œë²ˆí˜¸:");
                         printf("\n\t\t%s", bank_name);
 
-                        // ÀÔ±İÇÒ ÆÇ¸ÅÀÚÀÇ °èÁÂ¹øÈ£¸¦ ºÒ·¯¿À´Â ÄÚµå
+                        // ì…ê¸ˆí•  íŒë§¤ìì˜ ê³„ì¢Œë²ˆí˜¸ë¥¼ ë¶ˆëŸ¬ì˜¤ëŠ” ì½”ë“œ
 
                         mysql_query(conn, "select Account_number from  Manufacturer as m,product as p \
                         where p.Business_number = M.Business_number and p.product_number = '0000100'; ");
 
                         MYSQL_RES* result = mysql_store_result(conn);
 
-                        //result °ªÀÌ ³ÎÀÌ¸é ¿À·ù °ËÃâ¿ë ÄÚµå
+                        //result ê°’ì´ ë„ì´ë©´ ì˜¤ë¥˜ ê²€ì¶œìš© ì½”ë“œ
                         if (result == NULL)
                         {
                             finish_with_error(conn);
                         }
-                        // resultÀÇ ¹®ÀÚ¿­ °³¼ö
+                        // resultì˜ ë¬¸ìì—´ ê°œìˆ˜
                         int num_fields = mysql_num_fields(result);
 
                         MYSQL_ROW row;
-                        //ÇÁ¸°Æ® ³»¿ë
+                        //í”„ë¦°íŠ¸ ë‚´ìš©
                         while (row = mysql_fetch_row(result))
                         {
                             for (int i = 0; i < num_fields; i++)
@@ -681,28 +677,28 @@ int main(void)
                             }
                             printf("\n");
                         }
-                        //result °ª ÃÊ±âÈ­
+                        //result ê°’ ì´ˆê¸°í™”
                         mysql_free_result(result);
 
-                        printf("\n\n\t\t±¸¸ÅÀÏÀÚ 3ÀÏ ÀÌ³»·Î ÀÔ±İÇØÁÖ¼¼¿ä.\n");
+                        printf("\n\n\t\têµ¬ë§¤ì¼ì 3ì¼ ì´ë‚´ë¡œ ì…ê¸ˆí•´ì£¼ì„¸ìš”.\n");
                         printf("\n\t\t|--------------------------| \n");
-                        printf("\n\t\t|<±¸¸ÅÀÚ Á¤º¸>");
+                        printf("\n\t\t|<êµ¬ë§¤ì ì •ë³´>");
                         printf("\n");
-                        printf("\n\t\t|¿ìÆí¹øÈ£: %s \n", resident_number);
-                        printf("\n\t\t|ÁÖ¼Ò: %s %s  ", address1, address2);
+                        printf("\n\t\t|ìš°í¸ë²ˆí˜¸: %s \n", resident_number);
+                        printf("\n\t\t|ì£¼ì†Œ: %s %s  ", address1, address2);
                         printf("\n\t\t|--------------------------| \n");
                         printf("\t\t");
 
 
 
-                        printf("\n\t\t°¨»çÇÕ´Ï´Ù! ¹è¼ÛÀÏÀº ¹«ÅëÀå ÀÔ±İ³»¿ª È®ÀÎ ÈÄ ¾à 7ÀÏ Á¤µµ ¼Ò¿äµË´Ï´Ù.\n\n");
+                        printf("\n\t\tê°ì‚¬í•©ë‹ˆë‹¤! ë°°ì†¡ì¼ì€ ë¬´í†µì¥ ì…ê¸ˆë‚´ì—­ í™•ì¸ í›„ ì•½ 7ì¼ ì •ë„ ì†Œìš”ë©ë‹ˆë‹¤.\n\n");
 
                     }
-                    //ÁöºÒ ¹æ½ÄÀÌ Àß¸ø µÈ °æ¿ì ´Ù½Ã ÁöºÒ ¹æ½Ä ¼±ÅÃ
+                    //ì§€ë¶ˆ ë°©ì‹ì´ ì˜ëª» ëœ ê²½ìš° ë‹¤ì‹œ ì§€ë¶ˆ ë°©ì‹ ì„ íƒ
                     else
                     {
                         system("cls");
-                        printf("\n\t\t±¸¸Å¹æ½ÄÀ» ´Ù½Ã ÀÔ·ÂÇÏ½Ê½Ã¿À :");
+                        printf("\n\t\têµ¬ë§¤ë°©ì‹ì„ ë‹¤ì‹œ ì…ë ¥í•˜ì‹­ì‹œì˜¤ :");
                         goto paymentmethod2;
 
                     }
@@ -716,20 +712,20 @@ int main(void)
                 system("cls");
 
                 printf("\t\t|-----------------------------------------| \n");
-                printf("\t\t|¿ìÆí¹øÈ£¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À: ");
+                printf("\t\t|ìš°í¸ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤: ");
                 scanf("%s", resident_number);
                 printf("\t\t|-----------------------------------------| \n");
-                printf("\t\t|ÁÖ¼Ò¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À(ex:¼­¿ï½Ã °­³²±¸): ");
+                printf("\t\t|ì£¼ì†Œë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤(ex:ì„œìš¸ì‹œ ê°•ë‚¨êµ¬): ");
                 scanf("%s %s", address1, address2);
                 printf("\t\t|-----------------------------------------| \n");
 
                 paymentmethod3:
                 printf("\t\t|-----------------------------------------| \n");
-                printf("\t\t| 1.°èÁÂÀÌÃ¼ | 2.½Å¿ëÄ«µå | 3. ¹«ÅëÀåÀÔ±İ |\n");
+                printf("\t\t| 1.ê³„ì¢Œì´ì²´ | 2.ì‹ ìš©ì¹´ë“œ | 3. ë¬´í†µì¥ì…ê¸ˆ |\n");
                 printf("\t\t|-----------------------------------------| \n");
                 int payment_method = 0;
                 printf("\t\t|-----------------------------------------| \n");
-                printf("\t\t|°áÁ¦ ¹æ½ÄÀ» ¼±ÅÃÇÏ½Ê½Ã¿À: ");
+                printf("\t\t|ê²°ì œ ë°©ì‹ì„ ì„ íƒí•˜ì‹­ì‹œì˜¤: ");
                 scanf("%d", &payment_method);
                 printf("|\n");
                 printf("\t\t|-----------------------------------------| \n");
@@ -737,32 +733,32 @@ int main(void)
                 {
 
                     int bankcode;
-                    printf("\n\t\t°èÁÂ¹øÈ£¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À:");
+                    printf("\n\t\tê³„ì¢Œë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤:");
                     scanf("%d", &bankcode);
 
-                    //ÆÇ¸Å ¿Ï·áÈÄ -1 ÇÏ±â
+                    //íŒë§¤ ì™„ë£Œí›„ -1 í•˜ê¸°
                     qry = "update Product set Product_quantity=product_quantity-1 \
                         where Product_number = '0010000';";
                     mysql_real_query(conn, qry, strlen(qry));
                     res = mysql_store_result(conn);
 
 
-                    //»óÇ°°³¼ö¿¡¼­ -1 ÇÑ °ª º¸¿©ÁÖ±â
+                    //ìƒí’ˆê°œìˆ˜ì—ì„œ -1 í•œ ê°’ ë³´ì—¬ì£¼ê¸°
 
-                    printf("\n\t\tÇØ´ç »óÇ°Àº ");
+                    printf("\n\t\tí•´ë‹¹ ìƒí’ˆì€ ");
                     mysql_query(conn, "select Product_quantity from Product where Product_number='0010000'; ");
                     MYSQL_RES* result = mysql_store_result(conn);
 
-                    //result °ªÀÌ ³ÎÀÌ¸é ¿À·ù °ËÃâ¿ë ÄÚµå
+                    //result ê°’ì´ ë„ì´ë©´ ì˜¤ë¥˜ ê²€ì¶œìš© ì½”ë“œ
                     if (result == NULL)
                     {
                         finish_with_error(conn);
                     }
-                    // resultÀÇ ¹®ÀÚ¿­ °³¼ö
+                    // resultì˜ ë¬¸ìì—´ ê°œìˆ˜
                     int num_fields = mysql_num_fields(result);
 
                     MYSQL_ROW row;
-                    //ÇÁ¸°Æ® ³»¿ë
+                    //í”„ë¦°íŠ¸ ë‚´ìš©
                     while (row = mysql_fetch_row(result))
                     {
                         for (int i = 0; i < num_fields; i++)
@@ -771,20 +767,20 @@ int main(void)
                         }
 
                     }
-                    //result °ª ÃÊ±âÈ­
+                    //result ê°’ ì´ˆê¸°í™”
                     mysql_free_result(result);
 
 
-                    printf("°³ ³²¾Ò½À´Ï´Ù. \n");
+                    printf("ê°œ ë‚¨ì•˜ìŠµë‹ˆë‹¤. \n");
 
                     printf("\n\t\t|--------------------------| \n");
-                    printf("\n\t\t|  ±¸¸Å°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù.  |");
-                    printf("\n\t\t|<±¸¸ÅÀÚ Á¤º¸>");
-                    printf("\n\t\t|¿ìÆí¹øÈ£: %s \n", resident_number);
-                    printf("\n\t\t|ÁÖ¼Ò: %s %s  ", address1, address2);
+                    printf("\n\t\t|  êµ¬ë§¤ê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.  |");
+                    printf("\n\t\t|<êµ¬ë§¤ì ì •ë³´>");
+                    printf("\n\t\t|ìš°í¸ë²ˆí˜¸: %s \n", resident_number);
+                    printf("\n\t\t|ì£¼ì†Œ: %s %s  ", address1, address2);
                     printf("\n\t\t|--------------------------| \n");
 
-                    printf("\n\t\t°¨»çÇÕ´Ï´Ù! ¹è¼ÛÀÌ ½ÃÀÛµË´Ï´Ù. ¹è¼ÛÀÏÀº ¾à 7ÀÏ Á¤µµ ¼Ò¿äµË´Ï´Ù.\n\n");
+                    printf("\n\t\tê°ì‚¬í•©ë‹ˆë‹¤! ë°°ì†¡ì´ ì‹œì‘ë©ë‹ˆë‹¤. ë°°ì†¡ì¼ì€ ì•½ 7ì¼ ì •ë„ ì†Œìš”ë©ë‹ˆë‹¤.\n\n");
 
 
                 }
@@ -794,35 +790,35 @@ int main(void)
 
                     int card_number;
                     char card_company[30];
-                    printf("\n\t\tÄ«µå»ç¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À:");
+                    printf("\n\t\tì¹´ë“œì‚¬ë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤:");
                     scanf("%s", card_company);
 
-                    printf("\n\t\tÄ«µå¹øÈ£¸¦ ÀÔ·ÂÇÏ½Ê½Ã¿À:");
+                    printf("\n\t\tì¹´ë“œë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì‹­ì‹œì˜¤:");
                     scanf("%d", &card_number);
 
-                    //ÆÇ¸Å ¿Ï·áÈÄ -1 ÇÏ±â
+                    //íŒë§¤ ì™„ë£Œí›„ -1 í•˜ê¸°
                     qry = "update Product set Product_quantity=product_quantity-1 \
                         where Product_number = '0010000';";
                     mysql_real_query(conn, qry, strlen(qry));
                     res = mysql_store_result(conn);
 
 
-                    //»óÇ°°³¼ö¿¡¼­ -1 ÇÑ °ª º¸¿©ÁÖ±â
+                    //ìƒí’ˆê°œìˆ˜ì—ì„œ -1 í•œ ê°’ ë³´ì—¬ì£¼ê¸°
 
-                    printf("\n\t\tÇØ´ç »óÇ°Àº ");
+                    printf("\n\t\tí•´ë‹¹ ìƒí’ˆì€ ");
                     mysql_query(conn, "select Product_quantity from Product where Product_number='0010000'; ");
                     MYSQL_RES* result = mysql_store_result(conn);
 
-                    //result °ªÀÌ ³ÎÀÌ¸é ¿À·ù °ËÃâ¿ë ÄÚµå
+                    //result ê°’ì´ ë„ì´ë©´ ì˜¤ë¥˜ ê²€ì¶œìš© ì½”ë“œ
                     if (result == NULL)
                     {
                         finish_with_error(conn);
                     }
-                    // resultÀÇ ¹®ÀÚ¿­ °³¼ö
+                    // resultì˜ ë¬¸ìì—´ ê°œìˆ˜
                     int num_fields = mysql_num_fields(result);
 
                     MYSQL_ROW row;
-                    //ÇÁ¸°Æ® ³»¿ë
+                    //í”„ë¦°íŠ¸ ë‚´ìš©
                     while (row = mysql_fetch_row(result))
                     {
                         for (int i = 0; i < num_fields; i++)
@@ -831,19 +827,19 @@ int main(void)
                         }
 
                     }
-                    //result °ª ÃÊ±âÈ­
+                    //result ê°’ ì´ˆê¸°í™”
                     mysql_free_result(result);
 
 
-                    printf("°³ ³²¾Ò½À´Ï´Ù. \n");
+                    printf("ê°œ ë‚¨ì•˜ìŠµë‹ˆë‹¤. \n");
 
                     printf("\n\t\t|--------------------------| \n");
-                    printf("\n\t\t|  ±¸¸Å°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù.  |");
-                    printf("\n\t\t|<±¸¸ÅÀÚ Á¤º¸>");
-                    printf("\n\t\t|¿ìÆí¹øÈ£: %s \n", resident_number);
-                    printf("\n\t\t|ÁÖ¼Ò: %s %s  ", address1, address2);
+                    printf("\n\t\t|  êµ¬ë§¤ê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.  |");
+                    printf("\n\t\t|<êµ¬ë§¤ì ì •ë³´>");
+                    printf("\n\t\t|ìš°í¸ë²ˆí˜¸: %s \n", resident_number);
+                    printf("\n\t\t|ì£¼ì†Œ: %s %s  ", address1, address2);
                     printf("\n\t\t|--------------------------| \n");
-                    printf("\n\t\t°¨»çÇÕ´Ï´Ù! ¹è¼ÛÀÌ ½ÃÀÛµË´Ï´Ù.¹è¼ÛÀÏÀº ¾à 7ÀÏ Á¤µµ ¼Ò¿äµË´Ï´Ù.\n\n");
+                    printf("\n\t\tê°ì‚¬í•©ë‹ˆë‹¤! ë°°ì†¡ì´ ì‹œì‘ë©ë‹ˆë‹¤.ë°°ì†¡ì¼ì€ ì•½ 7ì¼ ì •ë„ ì†Œìš”ë©ë‹ˆë‹¤.\n\n");
 
 
                 }
@@ -852,28 +848,28 @@ int main(void)
                 {
 
                     char bank_name[10];
-                    printf("\n\t\tÀÔ±İÇÒ ÀºÇàÀ» ÀÔ·Â½Ê½Ã¿À: ");
+                    printf("\n\t\tì…ê¸ˆí•  ì€í–‰ì„ ì…ë ¥ì‹­ì‹œì˜¤: ");
                     scanf("%s", bank_name);
-                    printf("\n\t\tÀÔ±İÇÒ ÀºÇà ¹× ÇØ´ç ÀºÇàÀÇ ÆÇ¸ÅÀÚ °èÁÂ¹øÈ£:");
+                    printf("\n\t\tì…ê¸ˆí•  ì€í–‰ ë° í•´ë‹¹ ì€í–‰ì˜ íŒë§¤ì ê³„ì¢Œë²ˆí˜¸:");
                     printf("\n\t\t%s", bank_name);
 
-                    // ÀÔ±İÇÒ ÆÇ¸ÅÀÚÀÇ °èÁÂ¹øÈ£¸¦ ºÒ·¯¿À´Â ÄÚµå
+                    // ì…ê¸ˆí•  íŒë§¤ìì˜ ê³„ì¢Œë²ˆí˜¸ë¥¼ ë¶ˆëŸ¬ì˜¤ëŠ” ì½”ë“œ
 
                     mysql_query(conn, "select Account_number from  Manufacturer as m,product as p \
                         where p.Business_number = M.Business_number and p.product_number = '0010000'; ");
 
                     MYSQL_RES* result = mysql_store_result(conn);
 
-                    //result °ªÀÌ ³ÎÀÌ¸é ¿À·ù °ËÃâ¿ë ÄÚµå
+                    //result ê°’ì´ ë„ì´ë©´ ì˜¤ë¥˜ ê²€ì¶œìš© ì½”ë“œ
                     if (result == NULL)
                     {
                         finish_with_error(conn);
                     }
-                    // resultÀÇ ¹®ÀÚ¿­ °³¼ö
+                    // resultì˜ ë¬¸ìì—´ ê°œìˆ˜
                     int num_fields = mysql_num_fields(result);
 
                     MYSQL_ROW row;
-                    //ÇÁ¸°Æ® ³»¿ë
+                    //í”„ë¦°íŠ¸ ë‚´ìš©
                     while (row = mysql_fetch_row(result))
                     {
                         for (int i = 0; i < num_fields; i++)
@@ -882,28 +878,28 @@ int main(void)
                         }
                         printf("\n");
                     }
-                    //result °ª ÃÊ±âÈ­
+                    //result ê°’ ì´ˆê¸°í™”
                     mysql_free_result(result);
 
-                    printf("\n\n\t\t±¸¸ÅÀÏÀÚ 3ÀÏ ÀÌ³»·Î ÀÔ±İÇØÁÖ¼¼¿ä.\n");
+                    printf("\n\n\t\têµ¬ë§¤ì¼ì 3ì¼ ì´ë‚´ë¡œ ì…ê¸ˆí•´ì£¼ì„¸ìš”.\n");
                     printf("\n\t\t|--------------------------| \n");
-                    printf("\n\t\t|<±¸¸ÅÀÚ Á¤º¸>");
+                    printf("\n\t\t|<êµ¬ë§¤ì ì •ë³´>");
                     printf("\n");
-                    printf("\n\t\t|¿ìÆí¹øÈ£: %s \n", resident_number);
-                    printf("\n\t\t|ÁÖ¼Ò: %s %s  ", address1, address2);
+                    printf("\n\t\t|ìš°í¸ë²ˆí˜¸: %s \n", resident_number);
+                    printf("\n\t\t|ì£¼ì†Œ: %s %s  ", address1, address2);
                     printf("\n\t\t|--------------------------| \n");
                     printf("\t\t");
 
 
 
-                    printf("\n\t\t°¨»çÇÕ´Ï´Ù! ¹è¼ÛÀÏÀº ¹«ÅëÀå ÀÔ±İ³»¿ª È®ÀÎ ÈÄ ¾à 7ÀÏ Á¤µµ ¼Ò¿äµË´Ï´Ù.\n\n");
+                    printf("\n\t\tê°ì‚¬í•©ë‹ˆë‹¤! ë°°ì†¡ì¼ì€ ë¬´í†µì¥ ì…ê¸ˆë‚´ì—­ í™•ì¸ í›„ ì•½ 7ì¼ ì •ë„ ì†Œìš”ë©ë‹ˆë‹¤.\n\n");
 
                 }
-                //ÁöºÒ ¹æ½ÄÀÌ Àß¸ø µÈ °æ¿ì ´Ù½Ã ÁöºÒ ¹æ½Ä ¼±ÅÃ
+                //ì§€ë¶ˆ ë°©ì‹ì´ ì˜ëª» ëœ ê²½ìš° ë‹¤ì‹œ ì§€ë¶ˆ ë°©ì‹ ì„ íƒ
                 else
                 {
                     system("cls");
-                    printf("\n\t\t±¸¸Å¹æ½ÄÀ» ´Ù½Ã ÀÔ·ÂÇÏ½Ê½Ã¿À :");
+                    printf("\n\t\têµ¬ë§¤ë°©ì‹ì„ ë‹¤ì‹œ ì…ë ¥í•˜ì‹­ì‹œì˜¤ :");
                     goto paymentmethod3;
 
                 }
@@ -913,7 +909,7 @@ int main(void)
                 else 
                 {
                     system("cls");
-                    printf("\n\t\t»óÇ° ¼±ÅÃÀ» ´Ù½Ã ÀÔ·ÂÇÏ½Ê½Ã¿À :");
+                    printf("\n\t\tìƒí’ˆ ì„ íƒì„ ë‹¤ì‹œ ì…ë ¥í•˜ì‹­ì‹œì˜¤ :");
                     goto productinfromation;
                 }
 
@@ -922,8 +918,8 @@ int main(void)
             else
             {
                 system("cls");
-                printf("\t\t·Î±×ÀÎ¿¡ ½ÇÆĞÇÏ¼Ì½À´Ï´Ù.\n");
-                printf("\t\t´Ù½Ã ½Ãµµ ÇØÁÖ½Ê½Ã¿À.\n");
+                printf("\t\të¡œê·¸ì¸ì— ì‹¤íŒ¨í•˜ì…¨ìŠµë‹ˆë‹¤.\n");
+                printf("\t\të‹¤ì‹œ ì‹œë„ í•´ì£¼ì‹­ì‹œì˜¤.\n");
                 printf("\n\n");
                 goto login_fail;
             }
@@ -932,7 +928,7 @@ int main(void)
 
          else if (selecting == 3)
         {
-            printf("\t\tÀ¥ÆäÀÌÁö¸¦ Á¾·áÇÕ´Ï´Ù.\n\n");
+            printf("\t\tì›¹í˜ì´ì§€ë¥¼ ì¢…ë£Œí•©ë‹ˆë‹¤.\n\n");
             exit(1);
 
         }
