@@ -1,15 +1,6 @@
 # Database_mysql_Control
-```cpp
-#include<stdio.h>
-
-int main()
-{
-    MYSQL_RES* res;
-    MYSQL_ROW row;
-    mysql_real_query(conn, qry_check, strlen(qry_check));
-    res = mysql_store_result(conn);
-    field = mysql_num_fields(res);
-}
-
-
-```
+이 프로젝트는 mysql에 sql문으로 데이터 베이스를 만들고, 해당 데이터 베이스의 값을 불러오거나, 값을 변경한 프로젝트입니다.
+1. coupang1은 coupang 이란 웹사이트에서 데이터베이스에 쌓을 만한 데이터들을 관계형 데이터 베이스로 만든 후 sql문으로 작성한 데이터 베이스 입니다.
+2. mysql_project는 mysql서버에 연결한 후 로컬호스트로 데이터 베이스를 접속하고, 위 coupang1 데이터 베이스를 조작했습니다.
+2-1. coupang1의 데이터 베이스에서 데이터 값들을 불러와, 콘솔창에 띄우고, 콘솔창에서 CLI를 통해 숫자, 아이디,주소 등을 입력하여 해당 테이블을 변경하도록 하였습니다.
+2-2. 회원 가입시 만약 테이블에
